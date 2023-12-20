@@ -24,7 +24,7 @@ def mysqlconn():
         'L1_Current': current_l1,
         'L1_Voltage': voltage_l1,
     }
-    print(req_mode)
+
     cursor = connection.cursor()
     if req_mode == 1:
         cursor.execute(query)
@@ -33,7 +33,7 @@ def mysqlconn():
     else:
         cursor.execute(insert_query, insert_data)
         connection.commit()
-        print(f'New record add to db')
+        print(f'add to db{current_l1} & {voltage_l1}')
 
     connection.commit()
     connection.close()
