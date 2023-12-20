@@ -1,6 +1,6 @@
 import mysql.connector
 import random
-
+import values
 req_mode = 0
 
 def azuremysqlconn():
@@ -19,20 +19,20 @@ def azuremysqlconn():
         database='defaultdb',
         auth_plugin='mysql_native_password')
 
-    select_query = 'SELECT measure_count, L1_current ,L1_voltage FROM measure_values'
+    select_query = 'SELECT  L1_current ,L1_voltage FROM measure_values'
 
-    insert_query = 'INSERT INTO measure_values (measure_count , l1_Current, l1_Voltage) \
-                         VAlUES(%(measure_count)s, %(L1_Current)s, %(L1_Voltage)s)'
-    # insert_query = 'INSERT INTO measure_values (measure_count, l1_Current, l1_Voltage, l2_Current , l2_Voltage , l3_Current , l3_Voltage) \
-    #                          VAlUES(%(measure_count)s, %(L1_Current)s, %(L1_Voltage)s, %(L2_Current)s, %(L2_Voltage)s,%(L3_Current)s, %(L3_Voltage)s))'
+    insert_query = 'INSERT INTO measure_values (date , hour, l1_Current, l1_Voltage,l2_Current,l2_Voltage,l3_Current,l3_Voltage) \
+                         VAlUES(%(Date)s,%(Hour)s, %(L1_Current)s, %(L1_Voltage)s,%(L2_Current)s,%(L2_Voltage)s,%(L3_Current)s,%(L3_Voltage)s)'
+
     insert_data = {
-        'measure_count': 0,
-        'L1_Current': current_l1,
-        'L1_Voltage': voltage_l1,
-        'L2_Current': current_l2,
-        'L2_Voltage': voltage_l2,
-        'L3_Current': current_l3,
-        'L3_Voltage': voltage_l3,
+        'Date': values.make_measure()['Date'],
+        'Hour': values.make_measure()['Hour'],
+        'L1_Current': values.make_measure()['L1_Current'],
+        'L1_Voltage': values.make_measure()['L1_Voltage'],
+        'L2_Current': values.make_measure()['L2_Current'],
+        'L2_Voltage': values.make_measure()['L2_Voltage'],
+        'L3_Current': values.make_measure()['L3_Current'],
+        'L3_Voltage': values.make_measure()['L3_Voltage'],
     }
     # print(req_mode)
     cursor = connection.cursor()
@@ -43,7 +43,7 @@ def azuremysqlconn():
     else:
         cursor.execute(insert_query, insert_data)
         connection.commit()
-        print(f'New record add to db [  Current_L1 : {current_l1} , Voltage_L1 : {voltage_l1} ] ')
+        print(f'New record add to db')
 
 
     connection.commit()
